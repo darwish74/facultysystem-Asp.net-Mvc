@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FacultyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Dep_id" />
+    </Key>
+    <Property Name="Dep_id" Type="Int32" Nullable="false" />
+    <Property Name="Dep_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Dep_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Dep_photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="students" Relationship="Self.students_fk" FromRole="Departments" ToRole="student" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="student_id" />
+    </Key>
+    <Property Name="student_id" Type="Int32" Nullable="false" />
+    <Property Name="student_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="student_Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="student_Age" Type="Int32" />
+    <Property Name="Dep_id" Type="Int32" />
+    <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="ssn" Type="Int32" />
+    <Property Name="teacher" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Department" Relationship="Self.students_fk" FromRole="student" ToRole="Departments" />
+  </EntityType>
+  <Association Name="students_fk">
+    <End Role="Departments" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="student" Type="Self.student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departments">
+        <PropertyRef Name="Dep_id" />
+      </Principal>
+      <Dependent Role="student">
+        <PropertyRef Name="Dep_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FacultyEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="students" EntityType="Self.student" />
+    <AssociationSet Name="students_fk" Association="Self.students_fk">
+      <End Role="Departments" EntitySet="Departments" />
+      <End Role="student" EntitySet="students" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

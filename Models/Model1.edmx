@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FacultyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="Dep_id" />
+          </Key>
+          <Property Name="Dep_id" Type="int" Nullable="false" />
+          <Property Name="Dep_name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Dep_Description" Type="varchar(max)" />
+          <Property Name="Dep_photo" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="int" Nullable="false" />
+          <Property Name="student_name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="student_Address" Type="varchar(max)" />
+          <Property Name="student_Age" Type="int" />
+          <Property Name="Dep_id" Type="int" />
+          <Property Name="email" Type="varchar" MaxLength="30" />
+          <Property Name="ssn" Type="int" />
+          <Property Name="teacher" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="students_fk">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+          <End Role="student" Type="Self.student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="Dep_id" />
+            </Principal>
+            <Dependent Role="student">
+              <PropertyRef Name="Dep_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FacultyModelStoreContainer">
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="Faculty_schema" store:Type="Tables" />
+          <EntitySet Name="student" EntityType="Self.student" Schema="Faculty_schema" store:Type="Tables" />
+          <AssociationSet Name="students_fk" Association="Self.students_fk">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="student" EntitySet="student" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FacultyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Dep_id" />
+          </Key>
+          <Property Name="Dep_id" Type="Int32" Nullable="false" />
+          <Property Name="Dep_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Dep_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Dep_photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="students" Relationship="Self.students_fk" FromRole="Departments" ToRole="student" />
+        </EntityType>
+        <EntityType Name="student">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="Int32" Nullable="false" />
+          <Property Name="student_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="student_Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="student_Age" Type="Int32" />
+          <Property Name="Dep_id" Type="Int32" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ssn" Type="Int32" />
+          <Property Name="teacher" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Department" Relationship="Self.students_fk" FromRole="student" ToRole="Departments" />
+        </EntityType>
+        <Association Name="students_fk">
+          <End Role="Departments" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="student" Type="Self.student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="Dep_id" />
+            </Principal>
+            <Dependent Role="student">
+              <PropertyRef Name="Dep_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FacultyEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="students" EntityType="Self.student" />
+          <AssociationSet Name="students_fk" Association="Self.students_fk">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="student" EntitySet="students" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FacultyModelStoreContainer" CdmEntityContainer="FacultyEntities2">
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="FacultyModel.Department">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="Dep_id" ColumnName="Dep_id" />
+                <ScalarProperty Name="Dep_name" ColumnName="Dep_name" />
+                <ScalarProperty Name="Dep_Description" ColumnName="Dep_Description" />
+                <ScalarProperty Name="Dep_photo" ColumnName="Dep_photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="students">
+            <EntityTypeMapping TypeName="FacultyModel.student">
+              <MappingFragment StoreEntitySet="student">
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="student_name" ColumnName="student_name" />
+                <ScalarProperty Name="student_Address" ColumnName="student_Address" />
+                <ScalarProperty Name="student_Age" ColumnName="student_Age" />
+                <ScalarProperty Name="Dep_id" ColumnName="Dep_id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="ssn" ColumnName="ssn" />
+                <ScalarProperty Name="teacher" ColumnName="teacher" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

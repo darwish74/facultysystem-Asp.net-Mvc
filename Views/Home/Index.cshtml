@@ -1,0 +1,39 @@
+﻿@using MVC.Models;
+@model List<Department>
+    <div class="container">
+        <section class="page-section portfolio" id="portfolio">
+            <div class="container">
+                <!-- Portfolio Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Departments</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon">  </div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Portfolio Grid Items-->
+                <div class="row justify-content-center">
+                    <!-- Portfolio Item 1-->
+                    <div style="text-align:center">
+                        <img class="img-fluid" style="height:300px;width:400px" src="~/photos/131698204_3537673629619845_6469463131096548434_n.jpg" alt="..." />    
+                    </div>
+                    @foreach (var item in Model)
+                    {<<div class="col-md-4 col-lg-3 mb-5">
+                            <div class="portfolio-item mx-auto" data-toggle="modal">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                    <div class="portfolio-item-caption-content text-center text-white"> </div>
+                                </div>
+                                <img class="img-fluid" src="~/assets/img/portfolio/316951884_6087677691262983_1230179634181519378_n.jpg" alt="..." />
+                            </div>
+                        </div>
+                        <div style="text-align:center">
+                            <h4>@item.Dep_name</h4>
+                            <p>@item.Dep_Description</p>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </section>
+
+    </div>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FacultyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="Dep_id" />
+    </Key>
+    <Property Name="Dep_id" Type="int" Nullable="false" />
+    <Property Name="Dep_name" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Dep_Description" Type="varchar(max)" />
+    <Property Name="Dep_photo" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="student_id" />
+    </Key>
+    <Property Name="student_id" Type="int" Nullable="false" />
+    <Property Name="student_name" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="student_Address" Type="varchar(max)" />
+    <Property Name="student_Age" Type="int" />
+    <Property Name="Dep_id" Type="int" />
+    <Property Name="email" Type="varchar" MaxLength="30" />
+    <Property Name="ssn" Type="int" />
+    <Property Name="teacher" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="students_fk">
+    <End Role="Departments" Type="Self.Departments" Multiplicity="0..1" />
+    <End Role="student" Type="Self.student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departments">
+        <PropertyRef Name="Dep_id" />
+      </Principal>
+      <Dependent Role="student">
+        <PropertyRef Name="Dep_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FacultyModelStoreContainer">
+    <EntitySet Name="Departments" EntityType="Self.Departments" Schema="Faculty_schema" store:Type="Tables" />
+    <EntitySet Name="student" EntityType="Self.student" Schema="Faculty_schema" store:Type="Tables" />
+    <AssociationSet Name="students_fk" Association="Self.students_fk">
+      <End Role="Departments" EntitySet="Departments" />
+      <End Role="student" EntitySet="student" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
